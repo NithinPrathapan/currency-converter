@@ -1,7 +1,24 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 const CurrencyConvertor = () => {
-  //currencies => https://api.frankfurter.app/currecies
+  const [currencies, setCurrencies] = useState([]);
+  const [amount, setamount] = useState(1);
+
+  const fetchCurrencies = async () => {
+    try {
+      const res = await fetch("https://api.frankfurter.app/currencies");
+      const data = await res.json();
+      setCurrencies(data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  useEffect(() => {
+    fetchCurrencies();
+  }, []);
+
+
+  //currencies => https://api.frankfurter.app/currencies
   //latest => https://api.frankfurter.app/latest?from=USD&to=INR
   return (
     <div className="max-w-xl my-10 p-5 bg-white rounded-lg shadow-md">
@@ -17,6 +34,7 @@ const CurrencyConvertor = () => {
           Amount
         </label>
         <input
+          onChange={(e) => setamount(e.target.value)}
           type="number"
           className="w-full p-2 border-gray-300 shadow-sm focus:outline-none focus:ring-2 ring-black rounded-xl my-1 "
           name=""
