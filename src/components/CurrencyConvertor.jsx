@@ -17,6 +17,10 @@ const CurrencyConvertor = () => {
       console.error(error);
     }
   };
+  const swapCurrencies = () => {
+    setFromCurrency(toCurrency);
+    setToCurrency(fromCurrency);
+  };
   useEffect(() => {
     fetchCurrencies();
   }, []);
@@ -37,10 +41,13 @@ const CurrencyConvertor = () => {
           currency={fromCurrency}
           setCurrency={setFromCurrency}
         />
-        <div className="flex justify-center items-center -mb-5 sm:mb-2">
-        <button>
-          <HiArrowsRightLeft size={24} />
-        </button>
+        <div className="flex justify-center  -mb-5 sm:mb-0 ">
+          <button
+            onClick={swapCurrencies}
+            className="p-2 bg-gray-200 rounded-full cursor-pointer hover:bg-gray-300"
+          >
+            <HiArrowsRightLeft size={24} />
+          </button>
         </div>
         <Dropdown
           currencies={currencies}

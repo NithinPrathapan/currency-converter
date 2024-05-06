@@ -9,7 +9,7 @@ const Dropdown = ({
   title = "",
 }) => {
   return (
-    <div>
+    <div className="">
       <label
         className="block text-sm font-medium text-gray-700"
         htmlFor={title}
@@ -20,7 +20,7 @@ const Dropdown = ({
         <select
           value={currency}
           onChange={(e) => setCurrency(e.target.value)}
-          className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2  focus:ring-indigo-500"
+          className="w-full p-2 border border-gray-300 bg-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2  focus:ring-indigo-500"
           name=""
           id=""
         >
