@@ -5,8 +5,11 @@ import { HiArrowsRightLeft } from "react-icons/hi2";
 const CurrencyConvertor = () => {
   const [currencies, setCurrencies] = useState([]);
   const [amount, setamount] = useState(1);
+  console.log(amount);
   const [fromCurrency, setFromCurrency] = useState("USD");
   const [toCurrency, setToCurrency] = useState("INR");
+  const [convertedAmount, setConvertedAmount] = useState(null);
+  const [converting, setConverting] = useState(false);
 
   const fetchCurrencies = async () => {
     try {
@@ -25,9 +28,23 @@ const CurrencyConvertor = () => {
     fetchCurrencies();
   }, []);
   const handleFavourites = async (currency) => {};
-  const currencyConvert = () => {};
-  //currencies => https://api.frankfurter.app/currencies
-  //latest => https://api.frankfurter.app/latest?from=USD&to=INR
+  //conversion => https://api.frankfurter.app/latest?from=USD&to=INR
+  const currencyConvert = async () => {
+    if (!amount) return;
+    setConverting(true);
+    try {
+      const res = await fetch(
+        `https://api.frankfurter.app/latest?amount=${amount}&from=${fromCurrency}&to=${toCurrency}`
+      );
+      const data = await res.json();
+      setConvertedAmount(data.rates[toCurrency] + " " + toCurrency);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setConverting(false);
+    }
+  };
+
   return (
     <div className="max-w-xl my-10 p-5 bg-white rounded-lg shadow-md">
       <h2 className="mb-5  text-2xl  font-semibold text-gray-700">
@@ -69,6 +86,7 @@ const CurrencyConvertor = () => {
           type="number"
           className="w-full p-2 border-gray-300 shadow-sm focus:outline-none focus:ring-2 ring-black rounded-xl my-1 "
           name=""
+          value={amount}
           id=""
         />
       </div>
@@ -80,9 +98,11 @@ const CurrencyConvertor = () => {
           Convert
         </button>
       </div>
-      <div className="mt-4 text-lg font-medium text-right text-green-500">
-        Converted Amount:69 USD
-      </div>
+      {convertedAmount && (
+        <div className="mt-4 text-lg font-medium text-right text-green-500">
+          {convertedAmount}
+        </div>
+      )}
     </div>
   );
 };

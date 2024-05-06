@@ -17,6 +17,7 @@ const Dropdown = ({
         {title}
       </label>
       <div className="mt-1 relative">
+        <hr />
         <select
           value={currency}
           onChange={(e) => setCurrency(e.target.value)}
@@ -24,7 +25,6 @@ const Dropdown = ({
           name=""
           id=""
         >
-          <hr />
           {/* render favorites */}
           {currencies?.map((currency) => (
             <option value={currency} key={currency}>
