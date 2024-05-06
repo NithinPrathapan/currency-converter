@@ -1,4 +1,6 @@
 import React from "react";
+import { FaStar } from "react-icons/fa";
+import { HiStar } from "react-icons/hi2";
 
 const Dropdown = ({
   currencies,
@@ -8,6 +10,8 @@ const Dropdown = ({
   handleFavourites,
   title = "",
 }) => {
+  const isFavorite = (curr) => favourite.includes(curr);
+
   return (
     <div className="">
       <label
@@ -25,18 +29,25 @@ const Dropdown = ({
           name=""
           id=""
         >
-          {/* render favorites */}
-          {currencies?.map((currency) => (
-            <option value={currency} key={currency}>
+          {favourite.map((currency) => (
+            <option className="bg-gray-200" value={currency} key={currency}>
               {currency}
             </option>
           ))}
+          {/* render favorites */}
+          {currencies
+            ?.filter((c) => !favourite.includes(c))
+            .map((currency) => (
+              <option value={currency} key={currency}>
+                {currency}
+              </option>
+            ))}
         </select>
         <button
           onClick={() => handleFavourites(currency)}
           className="absolute inset-y-0 right-0 pr-5 flex items-center text-sm leading-5"
         >
-          ⭐
+          {isFavorite(currency) ? <FaStar color="yellow" /> : <HiStar />}
         </button>
       </div>
     </div>

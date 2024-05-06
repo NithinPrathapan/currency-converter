@@ -6,10 +6,13 @@ const CurrencyConvertor = () => {
   const [currencies, setCurrencies] = useState([]);
   const [amount, setamount] = useState(1);
   console.log(amount);
-  const [fromCurrency, setFromCurrency] = useState("USD");
-  const [toCurrency, setToCurrency] = useState("INR");
+  const [fromCurrency, setFromCurrency] = useState("");
+  const [toCurrency, setToCurrency] = useState("");
   const [convertedAmount, setConvertedAmount] = useState(null);
   const [converting, setConverting] = useState(false);
+  const [favorites, setFavorites] = useState(
+    JSON.parse(localStorage.getItem("favorites")) || ["INR", "EUR"]
+  );
 
   const fetchCurrencies = async () => {
     try {
@@ -27,7 +30,16 @@ const CurrencyConvertor = () => {
   useEffect(() => {
     fetchCurrencies();
   }, []);
-  const handleFavourites = async (currency) => {};
+  const handleFavourites = async (currency) => {
+    let updatedFavorites = [...favorites];
+    if (favorites.includes(currency)) {
+      updatedFavorites = updatedFavorites.filter((fav) => fav !== currency);
+    } else {
+      updatedFavorites.push(currency);
+    }
+    setFavorites(updatedFavorites);
+    localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
+  };
   //conversion => https://api.frankfurter.app/latest?from=USD&to=INR
   const currencyConvert = async () => {
     if (!amount) return;
@@ -52,6 +64,7 @@ const CurrencyConvertor = () => {
       </h2>
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 items-end ">
         <Dropdown
+          favourite={favorites}
           currencies={currencies}
           title="From :"
           handleFavourites={handleFavourites}
@@ -67,6 +80,7 @@ const CurrencyConvertor = () => {
           </button>
         </div>
         <Dropdown
+          favourite={favorites}
           currencies={currencies}
           title="To :"
           handleFavourites={handleFavourites}
